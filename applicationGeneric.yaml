@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: Template
+    
+  profiles:
+    active: dev, local
+  
+  datasource:
+    #H2
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/template;DB_CLOSE_ON_EXIT=FALSE
+        
+    #SQL
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://localhost:3306/template?useSSL=false&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC
+
+    username: 
+    password: 
+    
+  devtools:
+    add-properties: false
+  
+  h2:
+    console:
+      enabled: true
+      path: /console
+  
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
