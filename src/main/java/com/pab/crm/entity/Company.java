@@ -22,7 +22,7 @@ public class Company implements Serializable {
 	
 	@Column
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private long companyId;
 	
 	@Column(length = 10)
 	private String reference;
@@ -70,19 +70,19 @@ public class Company implements Serializable {
 	private float salesTotal;
 	
 	@ManyToMany(mappedBy = "companies")
-	Set<Employee> employees = new HashSet<>();
+	Set<User> users = new HashSet<>();
 	
 	@OneToOne
 	private Address address;
 	
 	public Company() {}	
 		
-	public long getId() {
-		return id;
+	public long getCompanyId() {
+		return companyId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getReference() {
@@ -212,12 +212,12 @@ public class Company implements Serializable {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	public Set<Employee> getEmployees() {
-		return employees;
+	public Set<User> getUsers() {
+		return users;
 	}
 
-	public void setEmployees(Set<Employee> employees) {
-		this.employees = employees;
+	public void setUsers(Set<User> users) {
+		this.users = users;
 	}
 	
 

@@ -1,6 +1,7 @@
 package com.pab.crm.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,11 @@ public class AddressService {
 	public List<Address> readAddresses() {
 		return this.addressRepository.findAll();
 	}
+	
+	public Optional<Address> readAddressById(Long id) {
+		return this.addressRepository.findById(id);
+	}
+	
 	
 	public Address createAddress(Address address) {
 		return this.addressRepository.save(address);

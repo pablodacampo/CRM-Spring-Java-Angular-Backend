@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,15 +15,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "Employees")
-public class Employee implements Serializable {
+@Table(name = "Users")
+public class User implements Serializable {
 	
 	private static final long serialVersionUID = -1711112695555661590L;
 	
 	@Column
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private long userId;
 	
 	@Column(length = 20)
 	private String firstName;
@@ -41,23 +45,38 @@ public class Employee implements Serializable {
 	@Column(length = 10)
 	private String role;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private Address address;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JsonIgnore
 	Set<Company> companies = new HashSet<>();
 	
 	
-	public Employee() {
+	public User() {
 		
 	}	
 	
-	public long getId() {
-		return id;
+	public void addCompany(Company company) {
+		if (!this.companies.contains(company)) {
+			this.companies.add(company);
+			company.users.add(this);
+		}
+	}
+	
+	public void removeCompany(Company company) {
+		if (this.companies.contains(company)) {
+			this.companies.remove(company);
+			company.users.remove(this);
+		}
+	}
+	
+	public long getUserId() {
+		return userId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public String getFirstName() {
@@ -123,20 +142,6 @@ public class Employee implements Serializable {
 	public void setCompanies(Set<Company> companies) {
 		this.companies = companies;
 	}	
-	
-	public void addCompany(Company company) {
-		if (!this.companies.contains(company)) {
-			this.companies.add(company);
-			company.employees.add(this);
-		}
-	}
-	
-	public void removeCompany(Company company) {
-		if (this.companies.contains(company)) {
-			this.companies.remove(company);
-			company.employees.remove(this);
-		}
-	}
 	
 	
 }
