@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pab.crm.entity.Address;
 import com.pab.crm.entity.Company;
 import com.pab.crm.entity.User;
-import com.pab.crm.service.CompanyService;
 import com.pab.crm.service.UserService;
 
 @RestController
@@ -27,66 +26,72 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private CompanyService companyService;	
+	// USERS
 	
+	// getUsers
 	@GetMapping("")
-	public List<User> readUsers() {
-		return this.userService.readUsers();
+	public List<User> getUsers() {
+		return this.userService.getUsers();
 	}
 	
+	// getUserById
 	@GetMapping("/{userId}")
-	public Optional<User> readUserById(@PathVariable Long userId) {
-		return this.userService.readUserById(userId);
+	public Optional<User> getUserById(@PathVariable Long userId) {
+		return this.userService.getUserById(userId);
 	}	
 
+	// createUser
 	@PostMapping("")
 	public User createUser(@RequestBody User user) {
 		return this.userService.createUser(user);
-	}
+	}	
 	
-	@PatchMapping("/{userId}")
-	public User updateUser(@PathVariable Long userId, @RequestBody User user) {
+	// updateUser
+	@PatchMapping("")
+	public User updateUser(@RequestBody User user) {
 		return this.userService.updateUser(user);
 	}
 	
-	// User Adding Company to Himself
-	@PostMapping("/{userId}/companies")
-	public Company addToMyCompanies(@PathVariable Long userId, @RequestBody Company company) {
-		// Move to Service
-		User user = this.userService.readUserById(userId).get();
-		Company newCompany = this.companyService.createCompany(company);
-		user.addCompany(newCompany);
-		this.userService.updateUser(user);
-		return newCompany;
-	}
+	// deleteUser
+	@DeleteMapping("/{userId}")
+	public void deleteUser(@PathVariable Long userId) {
+		this.userService.deleteUser(userId);
+	}	
 	
-	// Delete from my companies
+	// USERS COMPANIES
 	
-	// Manager assigning an existing company to a user
-	// @PostMapping("{userId}/companies/assign/{companyId}")
-	// get the user, get the company. user.addCompany(company), save user;
-	
+	// getCompaniesByUserId
 	@GetMapping("/{userId}/companies")
-	public Set<Company> addToMyCompanies(@PathVariable Long userId) {
-		User user = this.userService.readUserById(userId).get();
-		return user.getCompanies();
+	public Set<Company> getCompaniesByUserId(@PathVariable Long userId) {
+		return this.userService.getCompaniesByUserId(userId);
+	}
+
+	// addCompanyToUser
+	@PostMapping("{userId}/companies/{companyId}")
+	public Company addCompanyToUser(@PathVariable Long userId, @PathVariable Long companyId){
+		return this.userService.addCompanyToUser(userId, companyId);
 	}
 	
+	// removeCompanyFromUser
+	@DeleteMapping("/{companyId}/companies/{userId}")
+	public void removeCompanyFromUser(@PathVariable Long userId, @PathVariable Long companyId) {
+		this.userService.removeCompanyFromUser(userId, companyId);
+	}	
+	
+	// ADDRESSES
+
+	// createUserAddress
 	@PatchMapping("/{userId}/createaddress")
 	public User createUserAddress(@PathVariable Long userId, @RequestBody Address address) {
 		return this.userService.createUserAddress(userId, address);
 	}	
 	
+	// updateUserAddress
 	@PatchMapping("/{userId}/updateaddress")
 	public User updateUserAddress(@PathVariable Long userId, @RequestBody Address address) {
 		return this.userService.updateUserAddress(userId, address);
 	}	
 	
-	@DeleteMapping("/{userId}")
-	public void deleteUser(@PathVariable Long userId) {
-		this.userService.deleteUser(userId);
-	}
 
 	
 }

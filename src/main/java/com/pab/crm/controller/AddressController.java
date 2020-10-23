@@ -21,22 +21,28 @@ public class AddressController {
 	
 	@Autowired
 	private AddressService addressService;
+	
+	// ADDRESSES
 
+	// getAddresses
 	@GetMapping("")
-	public List<Address> readAddresss() {
-		return this.addressService.readAddresses();
+	public List<Address> getAddresses() {
+		return this.addressService.getAddresses();
 	}
 	
+	// getAddressById
 	@GetMapping("/{id}")
-	public Optional<Address> readAddressById(@PathVariable Long id) {
-		return this.addressService.readAddressById(id);
+	public Optional<Address> getAddressById(@PathVariable Long id) {
+		return this.addressService.getAddressById(id);
 	}	
 	
+	// createAddress
 	@PostMapping("")
 	public Address createAddress(@RequestBody Address address) {
 		return this.addressService.createAddress(address);
 	}
 	
+	// updateAddress
 	@PatchMapping("/{id}")
 	public Address updateAddress(@RequestBody Address address) {
 		return this.addressService.updateAddress(address);

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Companies")
@@ -69,14 +72,29 @@ public class Company implements Serializable {
 	@Column(length = 20)
 	private float salesTotal;
 	
-	@ManyToMany(mappedBy = "companies")
-	Set<User> users = new HashSet<>();
-	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 	
+	@ManyToMany(mappedBy = "companies")
+	@JsonIgnore
+	Set<User> users = new HashSet<>();
+	
 	public Company() {}	
-		
+
+	public void addUser(User user) {
+		if (!this.users.contains(user)) {
+			this.users.add(user);
+			user.companies.add(this);
+		}
+	}
+	
+	public void removeUser(User user) {
+		if (!this.users.contains(user)) {
+			this.users.remove(user);
+			user.companies.remove(this);
+		}
+	}
+	
 	public long getCompanyId() {
 		return companyId;
 	}

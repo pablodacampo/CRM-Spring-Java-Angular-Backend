@@ -2,6 +2,7 @@ package com.pab.crm.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pab.crm.entity.Address;
 import com.pab.crm.entity.Company;
+import com.pab.crm.entity.User;
 import com.pab.crm.service.CompanyService;
 
 @RestController
@@ -23,40 +25,61 @@ public class CompanyController {
 
 	@Autowired
 	private CompanyService companyService;
+	
+	// COMPANIES
 
+	// getCompanies
 	@GetMapping("")
-	public List<Company> readCompanies() {
-		return this.companyService.readCompanies();
+	public List<Company> getCompanies() {
+		return this.companyService.getCompanies();
 	}
 
+	// getCompanyById
 	@GetMapping("/{companyId}")
-	public Optional<Company> readCompanyById(@PathVariable Long companyId) {
-		return this.companyService.readCompanyById(companyId);
-	}
-
-	@PostMapping("")
-	public Company createCompany(@RequestBody Company company) {
-		return this.companyService.createCompany(company);
+	public Optional<Company> getCompanyById(@PathVariable Long companyId) {
+		return this.companyService.getCompanyById(companyId);
 	}
 	
-	@PatchMapping("/{companyId}")
-	public Company updateCompany(@PathVariable Long companyId, @RequestBody Company company) {
+	// createCompany
+	@PostMapping("/userId/{userId}")
+	public Company createCompany(@PathVariable Long userId, @RequestBody Company company) {
+		return this.companyService.createCompany(userId, company);
+	}
+	
+	// updateCompany
+	@PatchMapping("")
+	public Company updateCompany(@RequestBody Company company) {
 		return this.companyService.updateCompany(company);
+	}	
+
+	// deleteCompany
+	@DeleteMapping("/{companyId}")
+	public void deleteCompany(@PathVariable Long companyId) {
+		this.companyService.deleteCompany(companyId);
 	}
 	
+	// USERS COMPANIES
+	
+	// getUsersByCompanyId
+	@GetMapping("{companyId}/users")
+	public Set<User> getUsersByCompanyId(@PathVariable Long companyId) {
+		return this.companyService.getUsersByCompanyId(companyId);
+	}
+	
+	// ADDRESSES
+	
+	// createCompanyAddress
 	@PatchMapping("/{companyId}/createaddress")
 	public Company createCompanyAddress(@PathVariable Long companyId, @RequestBody Address address) {
 		return this.companyService.createCompanyAddress(companyId, address);
 	}
 	
+	// updateCompanyAddress
 	@PatchMapping("/{companyId}/updateaddress")
 	public Company updateCompanyAddress(@PathVariable Long companyId, @RequestBody Address address) {
 		return this.companyService.updateCompanyAddress(companyId, address);
 	}
+	
 
-	@DeleteMapping("/{companyId}")
-	public void deleteCompany(@PathVariable Long companyId) {
-		this.companyService.deleteCompany(companyId);
-	}
 
 }

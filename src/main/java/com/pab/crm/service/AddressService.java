@@ -14,24 +14,27 @@ public class AddressService {
 	
 	@Autowired
 	private AddressRepository addressRepository;
-	
-	public List<Address> readAddresses() {
+
+	// ADDRESSES
+
+	// getAddresses
+	public List<Address> getAddresses() {
 		return this.addressRepository.findAll();
 	}
 	
-	public Optional<Address> readAddressById(Long id) {
+	// getAddressById
+	public Optional<Address> getAddressById(Long id) {
 		return this.addressRepository.findById(id);
 	}
 	
-	
+	// createAddress
 	public Address createAddress(Address address) {
-		return this.addressRepository.save(address);
-		
+		return this.addressRepository.save(address);		
 	}
 	
+	// updateAddress
 	public Address updateAddress(Address address) {
-		return this.addressRepository.save(address);
-	
+		return this.addressRepository.save(address);	
 	}
 
 

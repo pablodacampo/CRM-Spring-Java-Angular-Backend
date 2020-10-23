@@ -45,7 +45,7 @@ public class User implements Serializable {
 	@Column(length = 10)
 	private String role;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
