@@ -63,7 +63,7 @@ public class UserService {
 	// addCompanyToUser
 	public Company addCompanyToUser(Long userId, Long companyId) {
 		User user = this.userService.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-		Company company = this.companyService.getCompanyById(companyId).get();
+		Company company = this.companyService.getCompanyById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
 		user.addCompany(company);
 		this.userRepository.save(user);
 		return company;
@@ -72,7 +72,7 @@ public class UserService {
 	// removeCompanyFromUser
 	public Company removeCompanyFromUser(Long userId, Long companyId) {
 		User user = this.userService.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-		Company company = this.companyService.getCompanyById(companyId).get();
+		Company company = this.companyService.getCompanyById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
 		user.removeCompany(company);
 		this.userRepository.save(user);
 		return company;
@@ -81,16 +81,16 @@ public class UserService {
 	// ADDRESSES
 
 	// createUserAddress
-	public User createUserAddress(Long userId, Address createAddress) {
+	public User createUserAddress(Long userId, Address createUserAddress) {
 		User user = this.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-		user.setAddress(createAddress);
+		user.setAddress(createUserAddress);
 		return this.updateUser(user);
 	}	
 	
 	// updateUserAddress
-	public User updateUserAddress(Long userId, Address updateAddress) {
+	public User updateUserAddress(Long userId, Address updateUserAddress) {
 		User user = this.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-		user.setAddress(updateAddress);
+		user.setAddress(updateUserAddress);
 		return this.updateUser(user);
 	}
 

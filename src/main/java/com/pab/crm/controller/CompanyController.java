@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import com.pab.crm.entity.Company;
 import com.pab.crm.entity.User;
 import com.pab.crm.service.CompanyService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/companies")
 public class CompanyController {
@@ -41,7 +43,7 @@ public class CompanyController {
 	}
 	
 	// createCompany
-	@PostMapping("/userId/{userId}")
+	@PostMapping("/{userId}")
 	public Company createCompany(@PathVariable Long userId, @RequestBody Company company) {
 		return this.companyService.createCompany(userId, company);
 	}

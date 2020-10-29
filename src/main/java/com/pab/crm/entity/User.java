@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -50,24 +51,28 @@ public class User implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
-	Set<Company> companies = new HashSet<>();
-	
+	Set<Company> companies = new HashSet<>();	
 	
 	public User() {
 		
 	}	
 	
+	@PreRemove
+	public void removeCompanies() {
+		this.companies.forEach((company) -> {
+			company.removeUser(this);
+		});
+	}
+	
 	public void addCompany(Company company) {
 		if (!this.companies.contains(company)) {
 			this.companies.add(company);
-			company.users.add(this);
 		}
 	}
 	
 	public void removeCompany(Company company) {
 		if (this.companies.contains(company)) {
 			this.companies.remove(company);
-			company.users.remove(this);
 		}
 	}
 	

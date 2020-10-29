@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import com.pab.crm.entity.Company;
 import com.pab.crm.entity.User;
 import com.pab.crm.service.UserService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -81,7 +83,7 @@ public class UserController {
 	// ADDRESSES
 
 	// createUserAddress
-	@PatchMapping("/{userId}/createaddress")
+	@PostMapping("/{userId}/createaddress")
 	public User createUserAddress(@PathVariable Long userId, @RequestBody Address address) {
 		return this.userService.createUserAddress(userId, address);
 	}	

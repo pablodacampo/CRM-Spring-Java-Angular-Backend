@@ -36,21 +36,19 @@ public class CompanyService {
 	
 	// createCompany
 	public Company createCompany(Long userId, Company company) {
-		User user = this.userRepository.findById(userId).get();
+		User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 		company.addUser(user); // USERS COMPANIES
 		return this.companyRepository.save(company);
 	}
 	
 	// updateCompany
 	public Company updateCompany(Company company) {
-		return this.companyRepository.save(company);
-	
+		return this.companyRepository.save(company);	
 	}
 	
 	// deleteCompany
 	public void deleteCompany(Long companyId) {
-		this.companyRepository.deleteById(companyId);
-	
+		this.companyRepository.deleteById(companyId);	
 	}	
 	
 	// USERS

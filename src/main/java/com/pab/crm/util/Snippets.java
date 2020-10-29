@@ -12,6 +12,9 @@ public class Snippets {
 //	user.setRole(updateUser.getRole());
 //	
 //	return this.UserRepository.save(User);
+	
+	// addCompanyToUser
+//	public Class methodName(
 
 	
 }
