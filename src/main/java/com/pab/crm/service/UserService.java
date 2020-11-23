@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.pab.crm.entity.Address;
 import com.pab.crm.entity.Company;
 import com.pab.crm.entity.User;
@@ -17,10 +16,7 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private UserService userService;
-
+	
 	@Autowired
 	private CompanyService companyService;
 
@@ -36,6 +32,11 @@ public class UserService {
 		return this.userRepository.findById(userId);
 	}
 
+	// searchUsersByName
+	public List<User> searchUsersByName(String term) {
+		return this.userRepository.findByFirstNameIgnoreCaseContainingOrLastNameIgnoreCaseContaining(term, term);
+	}
+	
 	// createUser
 	public User createUser(User user) {
 		return this.userRepository.save(user);
@@ -49,7 +50,6 @@ public class UserService {
 	// deleteUser
 	public void deleteUser(Long userId) {
 		this.userRepository.deleteById(userId);
-
 	}
 	
 	// COMPANIES
@@ -62,7 +62,7 @@ public class UserService {
 
 	// addCompanyToUser
 	public Company addCompanyToUser(Long userId, Long companyId) {
-		User user = this.userService.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+		User user = this.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 		Company company = this.companyService.getCompanyById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
 		user.addCompany(company);
 		this.userRepository.save(user);
@@ -71,12 +71,12 @@ public class UserService {
 	
 	// removeCompanyFromUser
 	public Company removeCompanyFromUser(Long userId, Long companyId) {
-		User user = this.userService.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+		User user = this.getUserById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 		Company company = this.companyService.getCompanyById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
 		user.removeCompany(company);
 		this.userRepository.save(user);
 		return company;
-	}	
+	}
 	
 	// ADDRESSES
 

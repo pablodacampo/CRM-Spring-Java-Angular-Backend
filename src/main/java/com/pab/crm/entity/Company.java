@@ -26,7 +26,7 @@ public class Company implements Serializable {
 	
 	@Column
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long companyId;
+	private long id;
 	
 	@Column(length = 10)
 	private String reference;
@@ -101,12 +101,12 @@ public class Company implements Serializable {
 		}
 	}
 	
-	public long getCompanyId() {
-		return companyId;
+	public long getId() {
+		return id;
 	}
 
-	public void setCompanyId(long companyId) {
-		this.companyId = companyId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getReference() {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pab.crm.entity.Address;
@@ -41,6 +42,12 @@ public class UserController {
 	public Optional<User> getUserById(@PathVariable Long userId) {
 		return this.userService.getUserById(userId);
 	}	
+	
+	// searchUsersByName
+	@GetMapping("/search")
+	public List<User> searchUsersbyName(@RequestParam String term) {
+		return this.userService.searchUsersByName(term);
+	}
 
 	// createUser
 	@PostMapping("")
@@ -75,9 +82,9 @@ public class UserController {
 	}
 	
 	// removeCompanyFromUser
-	@DeleteMapping("/{companyId}/companies/{userId}")
-	public void removeCompanyFromUser(@PathVariable Long userId, @PathVariable Long companyId) {
-		this.userService.removeCompanyFromUser(userId, companyId);
+	@DeleteMapping("/{userId}/companies/{companyId}")
+	public Company removeCompanyFromUser(@PathVariable Long userId, @PathVariable Long companyId) {
+		return this.userService.removeCompanyFromUser(userId, companyId);
 	}	
 	
 	// ADDRESSES

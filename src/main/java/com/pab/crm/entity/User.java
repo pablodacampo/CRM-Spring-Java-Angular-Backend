@@ -21,67 +21,68 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "Users")
 public class User implements Serializable {
-	
+
 	private static final long serialVersionUID = -1711112695555661590L;
-	
+
 	@Column
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long userId;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+
 	@Column(length = 20)
 	private String firstName;
-	
+
 	@Column(length = 15)
 	private String lastName;
-	
+
 	@Column(nullable = false, unique = true)
 	private String email;
-	
+
 	@Column(nullable = false)
 	private String password;
-	
+
 	@Column(length = 20)
 	private String telephone;
-	
-	@Column(length = 10)
+
+	@Column(length = 30)
 	private String role;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	private Address address;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JsonIgnore
-	Set<Company> companies = new HashSet<>();	
-	
+	Set<Company> companies = new HashSet<>();
+
 	public User() {
-		
-	}	
-	
+
+	}
+
 	@PreRemove
 	public void removeCompanies() {
 		this.companies.forEach((company) -> {
 			company.removeUser(this);
 		});
 	}
-	
+
 	public void addCompany(Company company) {
 		if (!this.companies.contains(company)) {
 			this.companies.add(company);
 		}
 	}
-	
+
 	public void removeCompany(Company company) {
 		if (this.companies.contains(company)) {
 			this.companies.remove(company);
 		}
 	}
-	
-	public long getUserId() {
-		return userId;
+
+	public long getId() {
+		return id;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -139,14 +140,13 @@ public class User implements Serializable {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
+
 	public Set<Company> getCompanies() {
 		return companies;
 	}
 
 	public void setCompanies(Set<Company> companies) {
 		this.companies = companies;
-	}	
-	
-	
+	}
+
 }

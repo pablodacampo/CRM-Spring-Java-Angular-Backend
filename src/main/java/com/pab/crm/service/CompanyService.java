@@ -34,11 +34,18 @@ public class CompanyService {
 		return this.companyRepository.findById(companyId);
 	}	
 	
+	// searchCompaniesByReferenceOrName
+	public List<Company> searchCompaniesByReferenceOrName(String term) {
+		return this.companyRepository.findByReferenceIgnoreCaseContainingOrNameIgnoreCaseContaining(term, term);
+	}
+	
 	// createCompany
 	public Company createCompany(Long userId, Company company) {
 		User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-		company.addUser(user); // USERS COMPANIES
-		return this.companyRepository.save(company);
+		Company newCompany = this.companyRepository.save(company);
+		user.addCompany(newCompany);
+		this.userRepository.save(user);
+		return newCompany;
 	}
 	
 	// updateCompany
@@ -58,6 +65,22 @@ public class CompanyService {
 		Company company = this.getCompanyById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
 		return company.getUsers();
 	}	
+	
+	// addUserToCompany
+	public User addUserToCompany(Long companyId, Long userId) {
+		Company company = this.getCompanyById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
+		User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+		user.addCompany(company);
+		return this.userRepository.save(user);
+	}
+	
+	// removeUserFromCompany
+	public User removeUserFromCompany(Long companyId, Long userId) {
+		Company company = this.getCompanyById(companyId).orElseThrow(() -> new RuntimeException("Company not found"));
+		User user = this.userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+		user.removeCompany(company);
+		return this.userRepository.save(user);
+	}
 	
 	// ADDRESSES
 	

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pab.crm.entity.Address;
@@ -42,8 +43,14 @@ public class CompanyController {
 		return this.companyService.getCompanyById(companyId);
 	}
 	
+	// searchCompaniesByReferenceOrName
+	@GetMapping("/search")
+	public List<Company> searchCompaniesByReferenceOrName(@RequestParam String term) {
+		return this.companyService.searchCompaniesByReferenceOrName(term);
+	}
+	
 	// createCompany
-	@PostMapping("/{userId}")
+	@PostMapping("/userid/{userId}")
 	public Company createCompany(@PathVariable Long userId, @RequestBody Company company) {
 		return this.companyService.createCompany(userId, company);
 	}
@@ -68,6 +75,18 @@ public class CompanyController {
 		return this.companyService.getUsersByCompanyId(companyId);
 	}
 	
+	// addUserToCompany
+	@PostMapping("{companyId}/users/{userId}")
+	public User addUserToCompany(@PathVariable Long companyId, @PathVariable Long userId) {
+		return this.companyService.addUserToCompany(companyId, userId);
+	}
+	
+	// removeUserFromCompany
+	@DeleteMapping("{companyId}/users/{userId}")
+	public User removeUserFromCompany(@PathVariable Long companyId, @PathVariable Long userId) {
+		return this.companyService.removeUserFromCompany(companyId, userId);
+	}
+		
 	// ADDRESSES
 	
 	// createCompanyAddress
